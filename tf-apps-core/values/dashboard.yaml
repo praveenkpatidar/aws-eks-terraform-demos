@@ -1,0 +1,12 @@
+## If any customization needed
+# https://github.com/kubernetes/dashboard/blob/master/aio/deploy/helm-chart/kubernetes-dashboard/values.yaml
+# Get token : aws eks get-token --cluster-name <Name of the cluster> and Copy token
+# dashboard will be visible after running kubectl proxy
+# http://localhost:8001/api/v1/namespaces/kube-system/services/https:dashboard-kubernetes-dashboard:https/proxy/#/login
+# Provide token and it will be good to go
+nodeSelector:
+  dedicated: cluster-core
+tolerations:
+  - key: dedicated
+    value: cluster-core
+    effect: NoSchedule

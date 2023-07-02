@@ -1,0 +1,29 @@
+---
+installCRDs: true
+nodeSelector:
+  dedicated: cluster-core
+
+tolerations:
+  - key: node-role.kubernetes.io/master
+    operator: "Exists"
+
+webhook:
+  nodeSelector:
+    dedicated: cluster-core
+
+  tolerations:
+    - key: node-role.kubernetes.io/master
+      operator: "Exists"
+cainjector:
+  nodeSelector:
+    dedicated: cluster-core
+
+  tolerations:
+    - key: node-role.kubernetes.io/master
+      operator: "Exists"
+startupapicheck:
+  nodeSelector:
+    dedicated: cluster-core
+  tolerations:
+    - key: node-role.kubernetes.io/master
+      operator: "Exists"

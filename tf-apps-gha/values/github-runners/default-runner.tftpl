@@ -1,0 +1,27 @@
+---
+apiVersion: actions.summerwind.dev/v1alpha1
+kind: RunnerDeployment
+metadata:
+  name: ${ name }
+  namespace: actions-runner-system
+spec:
+  template:
+    spec:
+      organization: ${ organization }
+      group: ${ group }
+      serviceAccountName: ${ service_account_name }
+      labels:
+        - actions_runner_${ environment }
+        - default
+        - ${ cluster_name }
+      resources:
+        requests:
+          cpu: 200m
+          memory: "500Mi"
+      dnsPolicy: ClusterFirst
+      nodeSelector:
+        dedicated: github-runner
+      tolerations:
+        - key: dedicated
+          value: github-runner
+          effect: NoSchedule

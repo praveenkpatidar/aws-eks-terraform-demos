@@ -1,0 +1,22 @@
+version: "3.7"
+services:
+  devops-utils:
+    platform: linux/x86_64
+    image: praveenkpatidar/devops-utils:main
+    env_file: .env
+    environment:
+      - AWS_SDK_LOAD_CONFIG=1
+    entrypoint: ""
+    volumes:
+      - .:/work
+      - ~/.aws:/root/.aws
+      - ~/.kube:/root/.kube
+      - ~/.gitconfig:/root/.gitconfig
+    working_dir: /work
+
+  envvars:
+    image: flemay/envvars:0.0.7
+    env_file: .env
+    working_dir: /work
+    volumes:
+      - .:/work

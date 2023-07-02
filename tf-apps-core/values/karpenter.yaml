@@ -1,0 +1,47 @@
+---
+nodeSelector:
+  dedicated: cluster-core
+
+tolerations:
+  - key: node-role.kubernetes.io/master
+    operator: "Exists"
+
+replicas: 2
+
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: karpenter.sh/provisioner-name
+              operator: DoesNotExist
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 90
+        preference:
+          matchExpressions:
+            - key: eks.amazonaws.com/capacityType
+              operator: In
+              values:
+                - ON_DEMAND
+                - SPOT
+  podAntiAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+      # use different ec2 hosts
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+              - key: app.kubernetes.io/instance
+                operator: In
+                values:
+                  - karpenter
+          topologyKey: kubernetes.io/hostname
+      - weight: 80
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+              - key: app.kubernetes.io/instance
+                operator: In
+                values:
+                  - karpenter
+          topologyKey: failure-domain.beta.kubernetes.io/zone
